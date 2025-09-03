@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taxonomía de Herramientas CASE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f0f2f5;
+      --text: #1d1d1f;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --accent: #0077ff;
+      --accent-hover: #005fff;
+      --gray: #86868b;
+
+      --card1: linear-gradient(135deg, #6a11cb, #2575fc);
+      --card2: linear-gradient(135deg, #ff512f, #dd2476);
+      --card3: linear-gradient(135deg, #11998e, #38ef7d);
+      --card4: linear-gradient(135deg, #f7971e, #ffd200);
+    }
+
+    .dark-mode {
+      --bg: #111114;
+      --text: #f5f5f7;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --gray: #8e8e93;
+
+      --card1: linear-gradient(135deg, #1a1a2e, #16213e);
+      --card2: linear-gradient(135deg, #3a0ca3, #7209b7);
+      --card3: linear-gradient(135deg, #0f766e, #134e4a);
+      --card4: linear-gradient(135deg, #5a189a, #3c096c);
+    }
+
+    body {
+      font-family: 'SF Pro Display', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    .header { text-align: center; margin-bottom: 50px; }
+    h1 { font-size: 3.2em; font-weight: 700; margin-bottom: 12px; }
+    .subtitle { font-size: 1.2em; color: var(--gray); }
+
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px;
+      background: var(--accent); color: white; border: none;
+      width: 50px; height: 50px; border-radius: 50%;
+      font-size: 1.2em; cursor: pointer; box-shadow: var(--shadow);
+      z-index: 100; transition: transform 0.2s ease;
+    }
+    .theme-toggle:hover { transform: scale(1.1); }
+
+    .section {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 40px 0; gap: 20px;
+    }
+    .reverse { flex-direction: row-reverse; }
+
+    .section img {
+      width: 45%;
+      max-height: 300px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+      padding: 8px;
+    }
+    .section img:hover { transform: scale(1.03); }
+
+    .card {
+      flex: 1;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); }
+
+    .card h2 { font-size: 1.6em; margin-bottom: 12px; }
+    .card p { margin-bottom: 15px; }
+    .card button {
+      background: rgba(255, 255, 255, 0.2); border: none; color: white;
+      padding: 10px 20px; border-radius: 24px; cursor: pointer;
+    }
+    .card button:hover { background: rgba(255, 255, 255, 0.35); }
+
+    .card1 { background: var(--card1); }
+    .card2 { background: var(--card2); }
+    .card3 { background: var(--card3); }
+    .card4 { background: var(--card4); }
+
+    footer {
+      text-align: center; padding: 40px 20px;
+      color: var(--gray); margin-top: 60px; font-size: 0.9em;
+    }
+
+    /* Estilo del modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--bg);
+      color: var(--text);
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      line-height: 1.7;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .modal-header h3 {
+      font-size: 1.5em;
+      color: var(--accent);
+    }
+    .close-btn {
+      background: #ff3b30;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+
+    @media(max-width: 900px) {
+      .section, .reverse { flex-direction: column; text-align: center; }
+      .section img { width: 100%; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <h1>Taxonomía de Herramientas CASE</h1>
+      <p class="subtitle">Clasificación y aplicaciones en ingeniería de software</p>
+    </div>
+
+    <!-- Sección 1 -->
+    <div class="section">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxAPVOU8jAX6EyvG28Fqjd0g4MF4Tmo-MpGQ&s" alt="Síntesis">
+      <div class="card card1">
+        <h2>📘 Síntesis de la lectura</h2>
+        <p>Las herramientas CASE apoyan el desarrollo de software a través de la automatización de tareas en todas las fases del ciclo de vida.</p>
+        <button onclick="openModal('sintesis')">Más información</button>
+      </div>
+    </div>
+
+    <!-- Sección 2 -->
+    <div class="section reverse">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhh21n5XOSEGANAa729p8HfbsWVKI2Hclbg0KlmNUYx1XPEU-10fa7yXNtts2g4kxNIHc2iDfbobcaB1qBZ1Vkzy73IxsJjt4gvwsPA0ttILWHsAjQ-epEJTF4dAt2VkEqY7Tsv_4AhMA8/s1600/6.jpg" alt="Fundamentos">
+      <div class="card card2">
+        <h2>⚙ Fundamentos de CASE</h2>
+        <p>Reducen esfuerzo y mejoran la productividad. Facilitan prototipado, documentación y mantenimiento.</p>
+        <button onclick="openModal('fundamentos')">Más información</button>
+      </div>
+    </div>
+
+    <!-- Sección 3 -->
+    <div class="section">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0dvoYhrvI-lm6M23hTv_koD7Yq6SYA5p1wMSODzaIYpRET3u6crFeigfjV7L6UU0Bj6U&usqp=CAU" alt="Ejemplos">
+      <div class="card card3">
+        <h2>💡 Ejemplos de herramientas CASE</h2>
+        <p>Modelado: Visual Paradigm, StarUML. Gestión: JIRA, Trello. Control de versiones: GitHub, GitLab. Calidad: SonarQube.</p>
+        <button onclick="openModal('ejemplos')">Más información</button>
+      </div>
+    </div>
+
+    <!-- Sección 4 -->
+    <div class="section reverse">
+      <img src="https://i.pinimg.com/736x/1a/47/c9/1a47c92541106d7198e41aa1b24bdb24.jpg" alt="Referencias">
+      <div class="card card4">
+        <h2>📑 Referencias</h2>
+        <p>- Pressman, R. (2010). Ingeniería del software, 5ta edición.<br>- Jara, S. (Unidad 1).<br>- Material de clase.</p>
+        <button onclick="openModal('referencias')">Ver referencias</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 - Proyecto Académico | Ingeniería de Software
+  </footer>
+
+  <!-- Modales -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <p id="modal-text"></p>
+    </div>
+  </div>
+
+  <script>
+    // Abrir modal con contenido dinámico
+    function openModal(type) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+
+      if (type === 'sintesis') {
+        title.textContent = 'Síntesis: Ingeniería Asistida por Computadora';
+        text.innerHTML = `
+          <strong>Las herramientas CASE</strong> (Computer-Aided Software Engineering) son sistemas que automatizan tareas clave en el ciclo de vida del software, desde el análisis hasta el mantenimiento. Según Sommerville (2017), su objetivo principal es mejorar la calidad, productividad y trazabilidad del desarrollo de software.<br><br>
+          Un entorno CASE integrado (I-CASE) permite que múltiples herramientas compartan un repositorio común, lo que asegura consistencia entre modelos, código y documentación. Esto es especialmente útil en proyectos grandes y equipos distribuidos.<br><br>
+          La adopción de CASE ha transformado la ingeniería de software al estandarizar procesos, reducir errores humanos y facilitar la reutilización de componentes.
+        `;
+      } else if (type === 'fundamentos') {
+        title.textContent = 'Fundamentos de las Herramientas CASE';
+        text.innerHTML = `
+          Las herramientas CASE no son solo programas, sino <strong>entornos integrados</strong> que combinan:<br><br>
+          • <strong>Herramientas</strong>: para modelado, programación, pruebas.<br>
+          • <strong>Repositorio central</strong>: base de datos única para todos los artefactos.<br>
+          • <strong>Marco de integración</strong>: permite que las herramientas intercambien datos.<br>
+          • <strong>Metodologías</strong>: soporte para UML, RUP, Scrum, etc.<br><br>
+          Como señala Joyanes Aguilar (2014), CASE mejora la gestión de configuración, el control de versiones y la documentación automática. Además, permite trazabilidad completa desde los requisitos hasta el código.<br><br>
+          Su uso reduce el esfuerzo manual, mejora la calidad del software y fortalece el trabajo colaborativo.
+        `;
+      } else if (type === 'ejemplos') {
+        title.textContent = 'Ejemplos y Casos de Uso';
+        text.innerHTML = `
+          <strong>Herramientas modernas CASE:</strong><br><br>
+          • <strong>Modelado UML</strong>: StarUML, Visual Paradigm, Enterprise Architect.<br>
+          • <strong>Gestión de proyectos</strong>: JIRA, Trello, ClickUp.<br>
+          • <strong>Control de versiones</strong>: GitHub, GitLab, Bitbucket.<br>
+          • <strong>Análisis de código</strong>: SonarQube, PMD, ESLint.<br>
+          • <strong>Pruebas automatizadas</strong>: Selenium, JUnit, Postman.<br><br>
+          <strong>Caso real:</strong> En Adamantio C.A., se usó <em>Enterprise Architect</em> para modelar procesos empresariales, lo que permitió visualizar flujos de negocio, detectar cuellos de botella y mejorar la toma de decisiones (Alfonzo Rivas, 2011).<br><br>
+          Estas herramientas, cuando se integran (CI/CD, DevOps), forman entornos poderosos para el desarrollo ágil y seguro.
+        `;
+      } else if (type === 'referencias') {
+        title.textContent = 'Referencias Académicas';
+        text.innerHTML = `
+          <strong>[1] Sommerville, I. (2017). <em>Ingeniería de software</em> (9a ed.). Pearson.</strong><br>
+          Capítulo 31: Ingeniería de software asistida por computadora. Cubre fundamentos, taxonomía y entornos CASE.<br><br>
+          <strong>[2] Joyanes Aguilar, L. (2014). <em>Programación en C, C++, Java y UML</em>. McGraw-Hill.</strong><br>
+          Explica el uso de CASE en análisis y diseño orientado a objetos.<br><br>
+          <strong>[3] Alfonzo Rivas, E. (2011). Uso de herramientas CASE para el modelado de negocios. LACCEI 2011.</strong><br>
+          <a href="https://www.laccei.org/LACCEI2011-Medellin/published/IT180_Alfonzo.pdf" target="_blank" style="color:#0077ff;">Ver documento</a><br><br>
+          • Material del aula virtual - UTA, 2025<br>
+          • Pressman, R. (2010). Ingeniería del software (5ta ed.)
+        `;
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    // Cerrar modal
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Cerrar al hacer clic fuera
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // Cambiar tema
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>
